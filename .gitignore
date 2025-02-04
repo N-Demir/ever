@@ -203,3 +203,4 @@ ims2/*
 outputs/*
 iters/*
 *.lock
+.slangtorch_cache/
