@@ -20,8 +20,6 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 # the name of the VS solution file.
 project(splinetracers VERSION 1.0)
 
-add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
-
 
 set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
@@ -75,6 +73,16 @@ include_directories(${CMAKE_SOURCE_DIR}/third_party)
 find_package(Torch REQUIRED)
 find_package(CGAL REQUIRED)
 # find_package(pybind11 REQUIRED)
+
+string(REGEX REPLACE "^([0-9]+\\.[0-9]+\\.[0-9]+).*" "\\1" TORCH_VERSION_CLEAN "${TORCH_VERSION}")
+message(STATUS "Clean Torch version: ${TORCH_VERSION_CLEAN}")
+if(${TORCH_VERSION_CLEAN} VERSION_GREATER "2.5.0")
+  add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
+  message(STATUS "Found Torch version: ${TORCH_VERSION}. CXX11ABI=1")
+else()
+  message(STATUS "Found Torch version: ${TORCH_VERSION}. CXX11ABI=0")
+  add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+endif()
 
 # Add pybind11
 include(FetchContent)
