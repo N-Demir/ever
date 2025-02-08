@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 # the name of the VS solution file.
 project(splinetracers VERSION 1.0)
 
+
 set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
@@ -73,16 +74,28 @@ find_package(Torch REQUIRED)
 find_package(CGAL REQUIRED)
 # find_package(pybind11 REQUIRED)
 
+string(REGEX REPLACE "^([0-9]+\\.[0-9]+\\.[0-9]+).*" "\\1" TORCH_VERSION_CLEAN "${TORCH_VERSION}")
+message(STATUS "Clean Torch version: ${TORCH_VERSION_CLEAN}")
+if(${TORCH_VERSION_CLEAN} VERSION_GREATER "2.5.0")
+  add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
+  message(STATUS "Found Torch version: ${TORCH_VERSION}. CXX11ABI=1")
+else()
+  message(STATUS "Found Torch version: ${TORCH_VERSION}. CXX11ABI=0")
+  add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+endif()
+
+# Add pybind11
 include(FetchContent)
 FetchContent_Declare(
     pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
-    GIT_TAG        v2.9.2
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG v2.11.1  # Change this to the desired version
 )
-FetchContent_GetProperties(pybind11)
-if(NOT pybind11_POPULATED)
-    FetchContent_Populate(pybind11)
-    add_subdirectory(${pybind11_SOURCE_DIR} ${pybind11_BINARY_DIR})
+FetchContent_MakeAvailable(pybind11)
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
 endif()
 
 # Tells CMake to build all the libraries as shared libraries by default.  This can be

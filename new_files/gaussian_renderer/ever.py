@@ -17,10 +17,10 @@ import torch
 import math
 
 from scene.gaussian_model import GaussianModel
-from splinetracer.splinetracers.fast_ellipsoid_splinetracer import trace_rays
+from ever.splinetracers.fast_ellipsoid_splinetracer import trace_rays
 # from splinetracer.splinetracers.ellipsoid_splinetracer import trace_rays
 MAX_ITERS = 400
-from splinetracer.eval_sh import eval_sh as eval_sh2
+from ever.eval_sh import eval_sh as eval_sh2
 from utils.sh_utils import eval_sh, RGB2SH, SH2RGB
 from kornia import create_meshgrid
 import numpy as np
