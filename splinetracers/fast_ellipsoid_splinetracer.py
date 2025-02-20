@@ -157,6 +157,7 @@ class SplineTracer(Function):
                 dL_drayd,
                 dL_dmeans2D,
             )
+
             kernels.backwards_kernel(
                 last_state=ctx.saved.states,
                 last_dirac=ctx.saved.diracs,

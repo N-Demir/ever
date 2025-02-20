@@ -301,7 +301,7 @@ void backwards_kernel(
     dL_doutput.distortion_loss = dL_ddistortion_loss;
 
     uint num_iters = max(min(iters[ray_ind], max_iters), 0);
-    if (iters[ray_ind] >= max_iters-1) return;
+    if (iters[ray_ind] >= max_iters-1 || iters[ray_ind] <= 0) return;
     var dtmin = diffPair(tmin, {});
     var dtmax = diffPair(tmax, {});
     bwd_diff(extract_color)(deriv_state, dL_doutput);
