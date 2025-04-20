@@ -615,7 +615,6 @@ void optixTraceP0(
       in float3 ray_direction, //$2
       in float tmin, //$3
       in float tmax, //$4
-      inout uint[0] payload,
 )
 {
   __intrinsic_asm R"(
